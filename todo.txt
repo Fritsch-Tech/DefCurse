@@ -1,0 +1,5 @@
+Todo:
+    * handle escape key in blesses.get_key()
+    * add styles(color,...)
+    * add animation handling
+    * add support for external threads(networking)
