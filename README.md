@@ -1,4 +1,5 @@
-*Npyscreen is a python widget library and application framework for programming terminal or console applications.  It is built on top of ncurses, which is part of the standard library.*
+DefCurses is a high level Python TUI(terminal user interface) librery.
+The aim of this project is to simplify the process of writing TUI applications and to increase there reliability and testability. 
 
 Documentation
 =============
@@ -7,6 +8,12 @@ Online documentation can be found at:
 
 https://DefCurse.io/docs
 
+Feature Overview
+=============
+
+* Vertical and horizontal box layout widgets
+* List widget
+* Border-drawing widgets
 
 Upcoming features
 =============
@@ -14,6 +21,11 @@ Upcoming features
 * Support for animations
 * Support for background tasks(Networking,...)
 * More widgets
+    * Progress bar
+    * Checkbox
+    * Editor
+    * Textbox
+* Automatic border connections
 * Support for more key modifiers
 
 
