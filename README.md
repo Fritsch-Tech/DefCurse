@@ -33,6 +33,7 @@ Getting Started
 =============
  
 Start by looking at the examples in the example folders or with the Geting Started Guild:
+
 https://DefCurse.io/GettingStarted
 
 Downloads
