@@ -4,7 +4,7 @@ import tty
 import os
 
 
-from CLI_MVC import constants
+from DefCurse import constants
 
 
 def get_max_row_col() -> (int,int):

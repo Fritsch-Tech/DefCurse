@@ -9,16 +9,33 @@ from typing import Callable
 from datetime import datetime
 from dataclasses import replace, asdict
 
-from CLI_MVC import constants
-from CLI_MVC import terminal
+from DefCurse import constants
+from DefCurse import terminal
 
 def wrapper(
     model: object,
     view: Callable[[object], None],
     handler: Callable[[object,str], object],
     exit_condition: Callable[[object], bool],
-    crash_log_folder: str = None    
+    crash_log_folder: str = None ,   
+    debug: bool = False
 ) -> object:  
+    """Entry function for the programm
+
+    Args:
+        model (object): The initial model
+        view (Callable[[object], None]): Creates the Graphics from the given model
+        handler (Callable[[object,str], object]): Ceates a new model from the old one and a keybord input
+        exit_condition (Callable[[object], bool]): Tells the programm when to exit, given the current model. Programm stops it returns True
+        crash_log_folder (str, optional): Path to save the crashlogs to. Defaults to None.
+        debug (bool,optional): If errors should be outputed.Defaults to False.
+
+    Raises:
+        FileNotFoundError: If crash_log_folder is not found 
+
+    Returns:
+        object: The final state of the model
+    """
     error = None
     try:
         prev_terminal_state = terminal._init_terminal()
@@ -33,7 +50,7 @@ def wrapper(
         # Re-renders Terminal in case of SIGWINCH(resize) event
         signal.signal(signal.SIGWINCH, redraw)
         
-        while exit_condition(model):
+        while not exit_condition(model):
             try:
                 terminal._clear_terminal()
                 view(model)
@@ -43,7 +60,9 @@ def wrapper(
                     model = handler(model, terminal._get_key())
                 except KeyboardInterrupt:
                     break
-            except Exception:
+            except Exception as e:
+                if debug:
+                    error = e
                 if not os.path.exists(crash_log_folder):
                     raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), crash_log_folder)
                 
@@ -67,8 +86,11 @@ def wrapper(
                     "w+"
                 ) as f:
                     f.write(crash_report)
-
-                raise NameError(crash_log_file_path)
+                
+                break
+    except:
+        if debug:
+            error = e
             
     finally:
         terminal._restore_terminal(prev_terminal_state)

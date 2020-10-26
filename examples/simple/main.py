@@ -1,7 +1,9 @@
-from CLI_MVC import blesses
-from CLI_MVC import widgets
-from CLI_MVC import models
-from CLI_MVC import terminal
+from DefCurse import main
+from DefCurse import widgets
+from DefCurse import area
+from DefCurse import terminal
+from DefCurse import helpers
+
 
 from dataclasses import dataclass, replace, asdict
 from typing import List
@@ -17,19 +19,19 @@ class Model:
 
 
 def view(model: Model) -> None:
-    widgets.text_widget(models.Area(1,10,0),model.last_key.encode('unicode_escape'))
-    widgets.text_widget(models.Area(1,10,1),model.last_key)
-    widgets.text_widget(models.Area(1,10,2),list(map(ord,list(model.last_key))))
+    widgets.text_widget(area.Area(1,10,0),model.last_key.encode('unicode_escape'))
+    widgets.text_widget(area.Area(1,10,1),model.last_key)
+    widgets.text_widget(area.Area(1,10,2),list(map(ord,list(model.last_key))))
     widgets.list_widget(
         widgets.box_widget(
-            models.Area(
+            area.Area(
                 6,
-                30,
+                45,
                 5,
                 0
             )
         ),
-        widgets.add_line_numbers(json.dumps(asdict(model), indent=2).split("\n"))
+        helpers.add_line_numbers(json.dumps(asdict(model), indent=2).split("\n"))
     )
 
 
@@ -38,14 +40,11 @@ def handler(model: Model, event: str) -> Model:
 
 
 def exit_condition(model: Model) -> bool:
-    if model.exit:
-        return False
-    else:
-        return True
+    return model.exit
 
 
 if __name__ == '__main__':
-    blesses.wrapper(
+    main.wrapper(
         Model(),
         view,
         handler,

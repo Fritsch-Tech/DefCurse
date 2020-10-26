@@ -1,18 +1,15 @@
-from CLI_MVC import box_borders
-from CLI_MVC import style
-from CLI_MVC import helpers
-from CLI_MVC import models
-from CLI_MVC import terminal
+from DefCurse import box_borders
+from DefCurse import style
+from DefCurse import helpers
+from DefCurse import area
+from DefCurse import terminal
 
 
 from typing import List
 
-def add_line_numbers(list: List[str]) -> List[str]:
-    line_number_length = len(str(len(list))) + 2
-    return [(str(idx)+": ").rjust(line_number_length)+e for idx, e in enumerate(list)]
 
 # support line wrapping
-def text_widget(area: models.Area,text:str) -> models.Area:
+def text_widget(area: area.Area,text:str) -> area.Area:
     terminal._add_str(
         area.height_offset, 
         area.width_offset,
@@ -20,53 +17,66 @@ def text_widget(area: models.Area,text:str) -> models.Area:
         )
 
     
+def box_widget(area: area.Area,border_style:dir=box_borders.single) -> area.Area:
+    """Draws a box around a specified area, then returns the area inside of the box
 
-def box_widget(area: models.Area) -> models.Area:
-    borders: dir = box_borders.round
+    Args:
+        area (area.Area): Area to be boxed in
+        border_style (dir, optional): The look of the border, deafults can be found in the box_boder.py file. The dir requires the following fields: 
+        topLeft,topRight,bottomRight,bottomLeft,vertical,horizontal.Defaults to box_borders.single.
+
+    Returns:
+        area.Area: return the area inside of the box
+    """
     # Top Line
     terminal._add_str(
         area.height_offset,
         area.width_offset,
-        borders["topLeft"]+borders["horizontal"] *
-        (area.width-2)+borders["topRight"]
+        border_style["topLeft"]+border_style["horizontal"] *
+        (area.width-2)+border_style["topRight"]
     )
+    
+    #Bottom Line
     terminal._add_str(
         area.height_offset+area.height-1,
         area.width_offset,
-        borders["bottomLeft"]+borders["horizontal"] *
-        (area.width-2)+borders["bottomRight"]
+        border_style["bottomLeft"]+border_style["horizontal"] *
+        (area.width-2)+border_style["bottomRight"]
     )
+    
+    #Side Lines
     for line_index in range(area.height-2):
         terminal._add_str(
             area.height_offset+line_index+1,
             area.width_offset,
-            borders["vertical"]
+            border_style["vertical"]
         )
         terminal._add_str(
             area.height_offset+line_index+1,
             area.width_offset+area.width-1,
-            borders["vertical"]
+            border_style["vertical"]
         )
         
-    return models.Area(
+    return area.Area(
         height=area.height-2,
         width=area.width-2,
         width_offset=area.width_offset+1,
         height_offset=area.height_offset+1,
     )
 
-def labeled_box_widget(area: models.Area,name:str) -> models.Area:
-    nArea = box_widget(area)
-    terminal._add_str(area.height_offset, area.width_offset+1,name)
+def labeled_box_widget(area: area.Area,border_style:dir=box_borders.single,label:str="") -> area.Area:
+    nArea = box_widget(area,border_style)
+    if label:
+        terminal._add_str(area.height_offset, area.width_offset+1,label)
     return nArea
     
 
 def list_widget(
-    area:  models.Area,
+    area:  area.Area,
     list: list,
     selected_item: str = None,
     list_offsset: int = 0,
-) -> models.Area:
+) -> area.Area:
 
     for idx, entry in enumerate(list[list_offsset:area.height+list_offsset]):
         if entry == selected_item:

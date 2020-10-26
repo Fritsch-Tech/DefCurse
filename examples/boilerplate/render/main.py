@@ -1,27 +1,28 @@
 import models
 
-from CLI_MVC import widgets
-from CLI_MVC import style
-from CLI_MVC import models as mvcModels
+from DefCurse import widgets
+from DefCurse import style
+from DefCurse import area
+
 
 def render(model: models.Model, rows: int, cols: int):
     areas = [
-        mvcModels.Area(
+        area.Area(
             int(rows/2),
             int(cols/2),
         ),
-        mvcModels.Area(
+        area.Area(
             int(rows/2),
             int(cols/2),
             int(rows/2)
         ),
-        mvcModels.Area(
+        area.Area(
             int(rows/2),
             int(cols/2),
             0,
             int(cols/2)
         ),
-        mvcModels.Area(
+        area.Area(
             int(rows/2),
             int(cols/2),
             int(rows/2),

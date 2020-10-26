@@ -1,16 +1,16 @@
 from dataclasses import asdict
 import json
 
-from CLI_MVC import widgets
-from CLI_MVC import models as mvcModels
-
+from DefCurse import widgets
+from DefCurse import area
+ 
 import models
 
 
 def render(model: models.Model, rows: int, cols: int):
     widgets.list_widget(
         widgets.labeled_box_widget(
-            mvcModels.Area(
+            area.Area(
             rows,
             cols,
             ),

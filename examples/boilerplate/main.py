@@ -4,7 +4,7 @@ import os
 
 from dataclasses import replace, asdict
 
-from CLI_MVC import blesses
+from DefCurse import main
 
 from models import Model
 from render.render import Render
@@ -19,7 +19,7 @@ def exit_condition(model: Model) -> bool:
 
 
 if __name__ == '__main__':
-    blesses.wrapper(
+    main.wrapper(
         Model(),
         Render,
         EventHandler,

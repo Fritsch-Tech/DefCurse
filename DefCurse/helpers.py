@@ -1,10 +1,18 @@
 import re
+from typing import List
 
-from CLI_MVC import constants
+
+from DefCurse import constants
+
 
 # strip ansi escape sequences from string
 def strip_esc(string: str) -> str:
     return re.sub(constants.ANSII_ESCAPE_REGEX,'',string)
+
+
+def add_line_numbers(list: List[str]) -> List[str]:
+    line_number_length = len(str(len(list))) + 2
+    return [(str(idx)+": ").rjust(line_number_length)+e for idx, e in enumerate(list)]
 
 
 # WIP
